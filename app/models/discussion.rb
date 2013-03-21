@@ -140,10 +140,16 @@ class Discussion < ActiveRecord::Base
     created_at
   end
 
-  def set_description!(description, user)
+  def set_description!(description, uses_markdown, user)
     self.description = description
+    self.uses_markdown = uses_markdown
     save!
     fire_edit_description_event(user)
+  end
+
+  def clone_markdown_setting(target)
+    self.uses_markdown = target.uses_markdown?
+    save!
   end
 
   def set_title!(title, user)
