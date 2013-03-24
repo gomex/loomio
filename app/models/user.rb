@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  extend ActiveSupport::Memoizable
 
   require 'net/http'
   require 'digest/md5'
@@ -155,6 +156,7 @@ class User < ActiveRecord::Base
   def is_group_admin?(group)
     memberships.for_group(group).with_access('admin').exists?
   end
+  memoize :is_group_admin?
 
   def is_group_member?(group)
     memberships.for_group(group).exists?
@@ -277,7 +279,7 @@ class User < ActiveRecord::Base
   end
 
   def root_groups
-    groups.where("parent_id IS NULL").find(:all, :order => "LOWER(name)")
+    groups.where("parent_id IS NULL").order("LOWER(name)")
   end
 
   def position(motion)

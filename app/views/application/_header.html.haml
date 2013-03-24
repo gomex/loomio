@@ -15,12 +15,13 @@
                 %b.caret
               %ul.dropdown-menu
                 #group-dropdown-items
-                  - current_user.root_groups.each do |group|
-                    = render 'group_dropdown_item', user: current_user, group: group, subgroup: false
-                    - if group.subgroups.size > 0
-                      - group.subgroups.each do |subgroup|
-                        - if current_user.group_membership(subgroup)
-                          = render 'group_dropdown_item', user: current_user, group: subgroup, subgroup: true
+                  - Rack::MiniProfiler.step("groupsy stuff") do
+                    - current_user.root_groups.includes(:subgroups).each do |group|
+                      = render 'group_dropdown_item', user: current_user, group: group, subgroup: false
+                      - if group.subgroups.size > 0
+                        - group.subgroups.each do |subgroup|
+                          - if current_user.group_membership(subgroup)
+                            = render 'group_dropdown_item', user: current_user, group: subgroup, subgroup: true
                 %li.group-item.new-group
                   =link_to "+ Request New Group", request_new_group_path
 

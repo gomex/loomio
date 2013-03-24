@@ -11,19 +11,21 @@ describe Motion do
   it {should have(1).errors_on(:name)}
   it {should have(1).errors_on(:author)}
 
-  it "user_has_voted?(user) returns true if the given user has voted on motion" do
-    @user = create(:user)
-    @motion = create(:motion, :author => @user)
-    @vote = build(:vote,:position => "yes")
-    @vote.user = @user
-    @vote.motion = @motion
-    @vote.save!
-    @motion.user_has_voted?(@user).should == true
-  end
+  describe "#user_has_voted?(user)", :focus do
+    it "returns true if the given user has voted on motion" do
+      @user = create(:user)
+      @motion = create(:motion, :author => @user)
+      @vote = build(:vote,:position => "yes")
+      @vote.user = @user
+      @vote.motion = @motion
+      @vote.save!
+      @motion.user_has_voted?(@user).should == true
+    end
 
-  it "user_has_voted?(user) returns false if given nil" do
-    @motion = create(:motion)
-    @motion.user_has_voted?(nil).should == false
+    it "returns false if given nil" do
+      @motion = create(:motion)
+      @motion.user_has_voted?(nil).should == false
+    end
   end
 
   describe "#set_close_date(date)" do

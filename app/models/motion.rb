@@ -53,10 +53,6 @@ class Motion < ActiveRecord::Base
     group.users.where(User.arel_table[:id].not_eq(author.id))
   end
 
-  def user_has_voted?(user)
-    votes.map{|v| v.user.id}.include?(user.id)
-  end
-
   def with_votes
     votes if votes.size > 0
   end
@@ -146,16 +142,13 @@ class Motion < ActiveRecord::Base
     (100-(no_vote_count/group_count.to_f * 100)).to_i
   end
 
+  def users_who_voted
+    User.joins(votes: {motion: {discussion: {}}}).
+         where(['discussions.group_id = ? AND motions.id = ?', group.id, id])
+  end
+
   def users_who_did_not_vote
-    if voting?
-      users = []
-      group.users.each do |user|
-        users << user unless user_has_voted?(user)
-      end
-      users
-    else
-      did_not_votes.map{ |did_not_vote| did_not_vote.user }
-    end
+    group.users.where(['users.id not in (?)', users_who_voted.pluck(:id)])
   end
 
   def group_count

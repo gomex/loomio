@@ -70,6 +70,13 @@ class Group < ActiveRecord::Base
   # ACCESSOR METHODS
   #
 
+  def tree
+    result = {}
+    order('parent_id DESC, LOWER(name)').each do |group|
+      result[]
+    end
+  end
+
   def beta_features
     if parent && (parent.beta_features == true)
       true
