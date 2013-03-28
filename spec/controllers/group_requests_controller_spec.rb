@@ -26,28 +26,16 @@ describe GroupRequestsController do
   end
 
   describe "#start_new_group" do
-    before do
-    end
-    context "token is correct" do
-      context "group request status is approved" do
-        it "sets the start_new_group session variable" do
-        end
-        context "user is signed in" do
-          it "redirects to the group page" do
-          end
-        end
-      end
-      context "group request status is accepted" do
-        it "redirects to the group page" do
-        end
-      end
-    end
-    context "token is incorrect" do
-      context "group request is approved"
-      context "group request is awaiting_approval"
-      context "group request is "
-      it "renders the invalid start group link page"
-    end
+    # context "group_id is passed into the params" do
+    #   it "should redirect to the group page" do
+    #     group = create(:group)
+    #     group_request.group_id = group.id
+    #     group_request.save!
+    #     GroupRequest.stub(:find).with(group.id).and_return(group_request)
+    #     get :start_new_group, group_id: group_request.group_id, token: group_request.token
+    #     response.should redirect_to(group_request.group)
+    #   end
+    # end
   end
 
   describe "#confirmation" do
