@@ -64,8 +64,7 @@ module ApplicationHelper
       :superscript => true
     ]
 
-    renderer = MarkdownRenderer.new
-
+    renderer = Redcarpet::Render::HTML.new
     markdown = Redcarpet::Markdown.new(renderer, *options)
     markdown.render(text).html_safe
   end
@@ -80,15 +79,15 @@ module ApplicationHelper
         :no_intra_emphasis => true,
         :tables => true,
         :fenced_code_blocks => true,
-        :autolink => false, #ideally we would use true here, but autolink is botching % signs https://github.com/vmg/redcarpet/issues/209
+        :autolink => true,
         :strikethrough => true,
         :space_after_headers => true,
         :superscript => true
       ]
 
-      renderer = MarkdownRenderer.new
+      renderer = Redcarpet::Render::HTML.new
       markdown = Redcarpet::Markdown.new(renderer, *options)
-      Rinku.auto_link(markdown.render(text), mode=:all, 'target="_blank"').html_safe
+      markdown.render(text).html_safe
     else
       Rinku.auto_link(simple_format(text), mode=:all, 'target="_blank"').html_safe
     end

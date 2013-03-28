@@ -19,8 +19,8 @@ class DiscussionsController < GroupBaseController
   end
 
   def create
+    current_user.update_attributes(uses_markdown: params[:discussion][:uses_markdown])
     @discussion = current_user.authored_discussions.new(params[:discussion])
-    @discussion.clone_markdown_setting(current_user)
     authorize! :create, @discussion
     if @discussion.save
       flash[:success] = "Discussion sucessfully created."
@@ -87,7 +87,7 @@ class DiscussionsController < GroupBaseController
 
   def add_comment
     @discussion = Discussion.find(params[:id])
-    comment = @discussion.add_comment(current_user, params[:comment])
+    comment = @discussion.add_comment(current_user, params[:comment], params[:global_uses_markdown])
     current_user.update_discussion_read_log(@discussion)
   end
 

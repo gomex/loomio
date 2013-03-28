@@ -3,12 +3,12 @@
 @import "mixins";
 
 /** discussion new (new loomio) modal*/
-body.discussions.new {
+body.discussions.new, body.discussions.create {
   .helper-text.align-with-input { margin-top: 20px }
 
   #discussion-markdown-dropdown {
     float: right;
-    margin-top: 14px;
+    margin-top: 8px;
   }
 
   #discussion-submit {
